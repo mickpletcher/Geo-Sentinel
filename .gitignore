@@ -1,6 +1,5 @@
 # Runtime output files
 *.log
-OFACCountryBaseline.json
 OFACGeofenceIsoCodes.csv
 OFACGeofenceIsoCodes.txt
 OFACUnmappedCountries.txt
