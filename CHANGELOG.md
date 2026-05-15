@@ -73,3 +73,5 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 - **2026-05-15** `60e6db5` Record latest changelog entry
 
 - **2026-05-15** `077a6a7` json file push
+
+- **2026-05-15** `c101c2b` updated gitignore file
