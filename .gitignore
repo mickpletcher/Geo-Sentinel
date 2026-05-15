@@ -22,3 +22,5 @@ Desktop.ini
 # Temp
 *.tmp
 *.bak
+
+.claude/
