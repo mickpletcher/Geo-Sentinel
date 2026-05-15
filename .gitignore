@@ -1,8 +1,6 @@
 # Runtime output files
 *.log
-OFACGeofenceIsoCodes.csv
-OFACGeofenceIsoCodes.txt
-OFACUnmappedCountries.txt
+
 
 # Local planning files (not for repo)
 future-upgrades.md
