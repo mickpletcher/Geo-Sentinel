@@ -1,24 +1,24 @@
-
-· GITIGNORE
-Copy
-
 # Runtime output files
 *.log
 OFACCountryBaseline.json
+OFACGeofenceIsoCodes.csv
 OFACGeofenceIsoCodes.txt
- 
+OFACUnmappedCountries.txt
+
+# Local planning files (not for repo)
+future-upgrades.md
+
 # Windows
 Thumbs.db
 Desktop.ini
- 
+
 # PowerShell
 *.ps1xml
 *.psd1.bak
- 
+
 # VSCode
 .vscode/
- 
+
 # Temp
 *.tmp
 *.bak
- 

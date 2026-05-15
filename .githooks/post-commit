@@ -1,0 +1,11 @@
+#!/bin/sh
+# Appends an entry to CHANGELOG.md after each commit.
+# The entry is staged and included in the following commit.
+#
+# Activate with: git config core.hooksPath .githooks
+
+HASH=$(git rev-parse --short HEAD)
+DATE=$(date +%Y-%m-%d)
+MSG=$(git log -1 --pretty=format:"%s")
+
+printf "\n- **%s** \`%s\` %s\n" "$DATE" "$HASH" "$MSG" >> CHANGELOG.md
