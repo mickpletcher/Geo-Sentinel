@@ -24,3 +24,5 @@ Desktop.ini
 *.bak
 
 .claude/
+
+*.code-workspace
