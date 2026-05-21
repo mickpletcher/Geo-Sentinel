@@ -1,0 +1,5 @@
+# High risk sample countries
+AF
+SO
+YE
+MM

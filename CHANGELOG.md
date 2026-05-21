@@ -77,3 +77,33 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 - **2026-05-15** `c101c2b` updated gitignore file
 
 - **2026-05-15** `1f0faf0` updated changelog
+
+## 2026-05-20
+
+- **Added policy based repository architecture** — Introduced `data/`, `scripts/`, `outputs/`, and `docs/` policy workflow folders with category subfolders and placeholder `README.md` files to document purpose and usage.
+
+- **Added policy category configuration** — Added `config/policies.yaml` and `config/policies.json` defining: `sanctions`, `high_risk`, `vpn_tor`, `hosting_providers`, `fraud_regions`, and `custom_business_rules`.
+
+- **Added geofence policy builder** — Added `scripts/build_geofence_policy.py` to parse category inputs, normalize ISO country codes and CIDRs, deduplicate entries, validate data, assign policy categories, and generate consolidated outputs:
+	- `outputs/geofence-policy.json`
+	- `outputs/geofence-policy.csv`
+	- `outputs/unifi/firewall-groups.txt`
+	- `outputs/pihole/regex-blocklist.txt`
+	- `outputs/cloudflare/waf-rules.txt`
+	- `outputs/nginx/geoip-map.conf`
+	- `outputs/iptables/ipset-rules.sh`
+
+- **Removed install requirement for default workflow** — Updated builder to default to `config/policies.json` and run directly from repo without requiring package installation. YAML config is still supported via `--config`.
+
+- **Added repo local source downloader** — Added `scripts/ingest/download_policy_sources.py` and `config/policy-sources.json` to refresh source lists directly into `data/*` folders from curated remote sources.
+
+- **Added sample data for immediate testing** — Added starter country and CIDR files across all policy categories so build and validation runs work out of the box.
+
+- **Updated documentation** — Expanded root `README.md`, added `docs/policy-model.md`, `docs/sources.md`, and folder level READMEs to document model, sources, and execution flow.
+
+- **Removed legacy generated artifacts from old OFAC flow** — Deleted stale output files no longer needed for the new policy workflow:
+	- `OFACCountryBaseline.json`
+	- `OFACGeofenceIsoCodes.csv`
+	- `OFACGeofenceIsoCodes.txt`
+	- `OFACUnmappedCountries.txt`
+	- `Outputs/` directory (legacy generated output folder)

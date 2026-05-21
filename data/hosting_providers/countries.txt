@@ -1,0 +1,4 @@
+# Hosting provider sample countries
+US
+IE
+SG

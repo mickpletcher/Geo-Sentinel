@@ -1,0 +1,19 @@
+policy_categories:
+  sanctions:
+    enabled: true
+    description: Country and network indicators sourced from formal sanctions programs.
+  high_risk:
+    enabled: true
+    description: High risk jurisdictions identified by compliance frameworks.
+  vpn_tor:
+    enabled: true
+    description: VPN and TOR exit indicators used for traffic risk controls.
+  hosting_providers:
+    enabled: true
+    description: Datacenter and hosting ranges used for stricter access decisions.
+  fraud_regions:
+    enabled: true
+    description: Countries and networks associated with elevated fraud trends.
+  custom_business_rules:
+    enabled: true
+    description: Organization specific policy entries maintained internally.

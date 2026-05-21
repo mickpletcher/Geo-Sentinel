@@ -1,0 +1,6 @@
+[
+  {
+    "network": "198.51.101.0/24",
+    "description": "Mock proxy network"
+  }
+]

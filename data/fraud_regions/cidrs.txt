@@ -1,0 +1,3 @@
+# Fraud region sample CIDRs
+102.89.0.0/16
+103.10.4.0/22

@@ -1,0 +1,3 @@
+network,country_code,region,confidence,description
+203.0.113.0/24,GB,England,84,Mock IP2Location entry
+198.51.101.0/24,IR,Tehran,84,Mock IP2Location entry

@@ -1,0 +1,9 @@
+[
+  {
+    "rule_id": "UK-BY",
+    "country_code": "BY",
+    "country_name": "Belarus",
+    "action": "Deny",
+    "reason_code": "UK_SANCTIONS_MATCH"
+  }
+]

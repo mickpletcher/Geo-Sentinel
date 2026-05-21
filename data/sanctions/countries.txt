@@ -1,0 +1,6 @@
+# Sanctions sample countries
+IR
+RU
+SY
+KP
+CU

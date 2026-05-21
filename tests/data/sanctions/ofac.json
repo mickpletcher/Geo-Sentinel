@@ -1,0 +1,24 @@
+[
+  {
+    "rule_id": "OFAC-CU",
+    "country_code": "CU",
+    "country_name": "Cuba",
+    "action": "Deny",
+    "reason_code": "OFAC_COUNTRY_MATCH"
+  },
+  {
+    "rule_id": "OFAC-IR",
+    "country_code": "IR",
+    "country_name": "Iran",
+    "action": "Deny",
+    "reason_code": "OFAC_COUNTRY_MATCH"
+  },
+  {
+    "rule_id": "OFAC-CRIMEA",
+    "country_code": "UA",
+    "country_name": "Ukraine",
+    "region": "Crimea",
+    "action": "Deny",
+    "reason_code": "OFAC_REGION_MATCH"
+  }
+]

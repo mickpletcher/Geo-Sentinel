@@ -1,0 +1,16 @@
+[
+  {
+    "rule_id": "EU-RU",
+    "country_code": "RU",
+    "country_name": "Russia",
+    "action": "Deny",
+    "reason_code": "EU_SANCTIONS_MATCH"
+  },
+  {
+    "rule_id": "EU-SY",
+    "country_code": "SY",
+    "country_name": "Syria",
+    "action": "Deny",
+    "reason_code": "EU_SANCTIONS_MATCH"
+  }
+]

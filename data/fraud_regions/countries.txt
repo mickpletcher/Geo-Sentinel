@@ -1,0 +1,4 @@
+# Fraud region sample countries
+NG
+PH
+ID

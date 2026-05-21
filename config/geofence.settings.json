@@ -1,0 +1,176 @@
+{
+  "OutputFormats": [
+    "JSON",
+    "PowerShell",
+    "NginxMap",
+    "CloudflareRules",
+    "FirewallRules"
+  ],
+  "OutputPaths": {
+    "Json": "../Outputs/geofence-rules.json",
+    "PowerShell": "../Outputs/geofence-rules.clixml",
+    "NginxMap": "../Outputs/geofence.map.conf",
+    "CloudflareRules": "../Outputs/cloudflare-country-rules.json",
+    "FirewallRules": "../Outputs/firewall-cidr-blocklist.txt"
+  },
+  "CountryAllowlist": [],
+  "CountryDenylist": [],
+  "RegionDenylist": [],
+  "AsnDenylist": [],
+  "TorBlocking": true,
+  "VpnBlocking": true,
+  "ProxyBlocking": true,
+  "DatacenterBlocking": true,
+  "ReviewInsteadOfDenyMode": false,
+  "StrictComplianceMode": true,
+  "ProviderPrecedence": {
+    "Geolocation": [
+      "MaxMind",
+      "IP2Location",
+      "DBIP",
+      "ipdeny"
+    ]
+  },
+  "Providers": [
+    {
+      "Name": "OFAC",
+      "ProviderType": "Sanctions",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://www.treasury.gov/ofac/downloads/add.csv",
+      "LocalCachePath": "../tests/data/sanctions/ofac.json",
+      "LastUpdated": "",
+      "Confidence": 100
+    },
+    {
+      "Name": "EU",
+      "ProviderType": "Sanctions",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://data.europa.eu",
+      "LocalCachePath": "../tests/data/sanctions/eu.json",
+      "LastUpdated": "",
+      "Confidence": 95
+    },
+    {
+      "Name": "UK",
+      "ProviderType": "Sanctions",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+      "LocalCachePath": "../tests/data/sanctions/uk.json",
+      "LastUpdated": "",
+      "Confidence": 95
+    },
+    {
+      "Name": "Custom",
+      "ProviderType": "Sanctions",
+      "Enabled": true,
+      "RefreshIntervalHours": 1,
+      "SourceUrl": "local://custom-rules",
+      "LocalCachePath": "../tests/data/sanctions/custom.json",
+      "LastUpdated": "",
+      "Confidence": 90
+    },
+    {
+      "Name": "HighRisk",
+      "ProviderType": "Sanctions",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "local://high-risk-rules",
+      "LocalCachePath": "../tests/data/sanctions/highrisk.json",
+      "LastUpdated": "",
+      "Confidence": 85
+    },
+    {
+      "Name": "MaxMind",
+      "ProviderType": "Geolocation",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://dev.maxmind.com/geoip/geolite2-free-geolocation-data",
+      "LocalCachePath": "../tests/data/geolocation/maxmind-country.csv",
+      "LastUpdated": "",
+      "Confidence": 92
+    },
+    {
+      "Name": "IP2Location",
+      "ProviderType": "Geolocation",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://lite.ip2location.com",
+      "LocalCachePath": "../tests/data/geolocation/ip2location-lite.csv",
+      "LastUpdated": "",
+      "Confidence": 84
+    },
+    {
+      "Name": "DBIP",
+      "ProviderType": "Geolocation",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://db-ip.com/db/download/ip-to-country-lite",
+      "LocalCachePath": "../tests/data/geolocation/dbip-country.csv",
+      "LastUpdated": "",
+      "Confidence": 82
+    },
+    {
+      "Name": "ipdeny",
+      "ProviderType": "Geolocation",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://www.ipdeny.com/ipblocks",
+      "LocalCachePath": "../tests/data/geolocation/ipdeny",
+      "LastUpdated": "",
+      "Confidence": 75
+    },
+    {
+      "Name": "Tor",
+      "ProviderType": "ThreatIntel",
+      "Enabled": true,
+      "RefreshIntervalHours": 6,
+      "SourceUrl": "https://check.torproject.org/torbulkexitlist",
+      "LocalCachePath": "../tests/data/threat/tor-exit-nodes.txt",
+      "LastUpdated": "",
+      "Confidence": 95
+    },
+    {
+      "Name": "VPN",
+      "ProviderType": "ThreatIntel",
+      "Enabled": true,
+      "RefreshIntervalHours": 6,
+      "SourceUrl": "mock://vpn-provider",
+      "LocalCachePath": "../tests/data/threat/vpn.json",
+      "LastUpdated": "",
+      "Confidence": 75
+    },
+    {
+      "Name": "Proxy",
+      "ProviderType": "ThreatIntel",
+      "Enabled": true,
+      "RefreshIntervalHours": 6,
+      "SourceUrl": "mock://proxy-provider",
+      "LocalCachePath": "../tests/data/threat/proxy.json",
+      "LastUpdated": "",
+      "Confidence": 75
+    },
+    {
+      "Name": "Datacenter",
+      "ProviderType": "ThreatIntel",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "mock://datacenter-provider",
+      "LocalCachePath": "../tests/data/threat/datacenter.json",
+      "LastUpdated": "",
+      "Confidence": 80
+    },
+    {
+      "Name": "ASNLookup",
+      "ProviderType": "ASNLookup",
+      "Enabled": true,
+      "RefreshIntervalHours": 24,
+      "SourceUrl": "https://iptoasn.com",
+      "LocalCachePath": "../tests/data/asn/iptoasn.csv",
+      "LastUpdated": "",
+      "Confidence": 88
+    }
+  ]
+}

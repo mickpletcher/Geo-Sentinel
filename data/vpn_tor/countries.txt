@@ -1,0 +1,4 @@
+# VPN and TOR sample countries
+NL
+IS
+PA

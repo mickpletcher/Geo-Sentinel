@@ -1,0 +1,74 @@
+{
+  "sources": [
+    {
+      "name": "ofac_add_csv",
+      "category": "sanctions",
+      "url": "https://www.treasury.gov/ofac/downloads/add.csv",
+      "target": "ofac-add.csv",
+      "enabled": true
+    },
+    {
+      "name": "uk_sanctions_csv",
+      "category": "sanctions",
+      "url": "https://sanctionslist.fcdo.gov.uk/docs/UK-Sanctions-List.csv",
+      "target": "uk-sanctions-list.csv",
+      "enabled": true
+    },
+    {
+      "name": "un_sanctions_xml",
+      "category": "sanctions",
+      "url": "https://scsanctions.un.org/resources/xml/en/consolidated.xml",
+      "target": "un-consolidated.xml",
+      "enabled": true
+    },
+    {
+      "name": "fatf_high_risk",
+      "category": "high_risk",
+      "url": "https://www.fatf-gafi.org/en/countries/black-and-grey-lists.html",
+      "target": "fatf-high-risk.html",
+      "enabled": true
+    },
+    {
+      "name": "tor_exit_nodes",
+      "category": "vpn_tor",
+      "url": "https://check.torproject.org/torbulkexitlist",
+      "target": "tor-exit-nodes.txt",
+      "enabled": true
+    },
+    {
+      "name": "spamhaus_drop",
+      "category": "fraud_regions",
+      "url": "https://www.spamhaus.org/drop/drop.txt",
+      "target": "spamhaus-drop.txt",
+      "enabled": true
+    },
+    {
+      "name": "ipdeny_ru",
+      "category": "sanctions",
+      "url": "https://www.ipdeny.com/ipblocks/data/countries/ru.zone",
+      "target": "ipdeny-ru.zone",
+      "enabled": true
+    },
+    {
+      "name": "ipdeny_ir",
+      "category": "sanctions",
+      "url": "https://www.ipdeny.com/ipblocks/data/countries/ir.zone",
+      "target": "ipdeny-ir.zone",
+      "enabled": true
+    },
+    {
+      "name": "maxmind_reference",
+      "category": "hosting_providers",
+      "url": "https://dev.maxmind.com/geoip/docs/databases/city-and-country/",
+      "target": "maxmind-reference.html",
+      "enabled": true
+    },
+    {
+      "name": "abuseipdb_reference",
+      "category": "fraud_regions",
+      "url": "https://www.abuseipdb.com/",
+      "target": "abuseipdb-reference.html",
+      "enabled": true
+    }
+  ]
+}

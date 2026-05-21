@@ -1,0 +1,5 @@
+network,country_code,region,confidence,description
+198.51.100.0/24,CU,Havana,92,Mock MaxMind entry
+203.0.113.0/24,GB,London,90,Mock MaxMind entry
+192.0.2.0/24,RU,Moscow,90,Mock MaxMind entry
+198.18.0.0/15,US,Virginia,85,Mock MaxMind entry

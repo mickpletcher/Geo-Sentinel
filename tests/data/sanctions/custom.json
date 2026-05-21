@@ -1,0 +1,17 @@
+[
+  {
+    "rule_id": "CUSTOM-VE",
+    "country_code": "VE",
+    "country_name": "Venezuela",
+    "action": "Review",
+    "reason_code": "CUSTOM_RULE_MATCH"
+  },
+  {
+    "rule_id": "CUSTOM-DONETSK",
+    "country_code": "UA",
+    "country_name": "Ukraine",
+    "region": "Donetsk",
+    "action": "Review",
+    "reason_code": "CUSTOM_RULE_MATCH"
+  }
+]

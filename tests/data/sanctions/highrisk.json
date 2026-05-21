@@ -1,0 +1,16 @@
+[
+  {
+    "rule_id": "HIGHRISK-AF",
+    "country_code": "AF",
+    "country_name": "Afghanistan",
+    "action": "Review",
+    "reason_code": "HIGH_RISK_COUNTRY"
+  },
+  {
+    "rule_id": "HIGHRISK-SY",
+    "country_code": "SY",
+    "country_name": "Syria",
+    "action": "Review",
+    "reason_code": "HIGH_RISK_COUNTRY"
+  }
+]

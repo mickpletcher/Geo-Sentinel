@@ -1,5 +1,6 @@
 # Runtime output files
 *.log
+Outputs/
 
 
 # Local planning files (not for repo)
