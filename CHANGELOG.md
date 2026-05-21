@@ -113,3 +113,5 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 - **2026-05-20** `1da7446` changelog update
 
 - **2026-05-20** `fb63b19` changelog update
+
+- **2026-05-20** `f68654a` feat: add policy model workflow with repo local data refresh
