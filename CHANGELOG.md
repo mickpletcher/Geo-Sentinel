@@ -107,3 +107,5 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 	- `OFACGeofenceIsoCodes.txt`
 	- `OFACUnmappedCountries.txt`
 	- `Outputs/` directory (legacy generated output folder)
+
+- **2026-05-20** `efb9342` feat: add policy model workflow with repo local data refresh
