@@ -1,6 +1,7 @@
 # Changelog
 
 Entries are appended automatically after each commit by `.githooks/post-commit`.
+The hook then amends the same commit so `CHANGELOG.md` does not remain modified.
 
 To activate the hook after cloning:
 
@@ -115,3 +116,7 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 - **2026-05-20** `fb63b19` changelog update
 
 - **2026-05-20** `f68654a` feat: add policy model workflow with repo local data refresh
+
+- **2026-05-20** `8ac0d07` chore: sync changelog after policy workflow commit
+
+- **2026-05-20** `8444ea4` fix: keep changelog clean after commits

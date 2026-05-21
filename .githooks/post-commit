@@ -1,11 +1,24 @@
 #!/bin/sh
-# Appends an entry to CHANGELOG.md after each commit.
-# The entry is staged and included in the following commit.
+# Appends an entry to CHANGELOG.md after each commit,
+# then amends the same commit so the working tree stays clean.
 #
 # Activate with: git config core.hooksPath .githooks
+
+set -eu
+
+if [ "${CHANGELOG_AMEND_IN_PROGRESS:-0}" = "1" ]; then
+	exit 0
+fi
+
+if [ ! -f "CHANGELOG.md" ]; then
+	exit 0
+fi
 
 HASH=$(git rev-parse --short HEAD)
 DATE=$(date +%Y-%m-%d)
 MSG=$(git log -1 --pretty=format:"%s")
 
 printf "\n- **%s** \`%s\` %s\n" "$DATE" "$HASH" "$MSG" >> CHANGELOG.md
+
+git add CHANGELOG.md
+CHANGELOG_AMEND_IN_PROGRESS=1 git commit --amend --no-edit --no-verify >/dev/null
