@@ -80,6 +80,9 @@ Update this file whenever one or more of the following changes:
 | Date | Change summary | Updated by |
 | --- | --- | --- |
 | 2026-05-20 | Initial repository assessment baseline created | Copilot |
+| 2026-05-20 | Hardened builder parsing to handle noisy external feed tokens without traceback; strict mode now fails cleanly on warnings | Copilot |
+| 2026-05-20 | Added strict profile mode to support curated-only strict validation for operational reliability | Copilot |
+| 2026-05-20 | Changed strict default behavior to curated profile to improve day to day reliability | Copilot |
 
 ## Next Recommended Actions
 

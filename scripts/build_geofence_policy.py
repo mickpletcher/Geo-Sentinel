@@ -20,6 +20,9 @@ except ImportError:  # pragma: no cover
     yaml = None
 
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
 REQUIRED_CATEGORIES = [
     "sanctions",
     "high_risk",
@@ -49,6 +52,7 @@ ISO_ALPHA2_CODES = {
 }
 
 COUNTRY_ALIASES = {
+        "UK": "GB",
     "AFGHANISTAN": "AF",
     "ALBANIA": "AL",
     "ALGERIA": "DZ",
@@ -130,6 +134,26 @@ COUNTRY_ALIASES = {
     "ZIMBABWE": "ZW",
 }
 
+CSV_FIELD_HINTS = {
+    "country",
+    "country_code",
+    "countrycode",
+    "iso",
+    "iso2",
+    "iso_code",
+    "cidr",
+    "network",
+    "range",
+    "ip",
+    "ip_range",
+    "subnet",
+}
+
+CURATED_FILENAMES = {
+    "countries.txt",
+    "cidrs.txt",
+}
+
 
 class PolicyBuildError(Exception):
     """Raised when policy validation fails."""
@@ -142,10 +166,16 @@ def setup_logging() -> logging.Logger:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build geofence policy files from category datasets.")
-    parser.add_argument("--config", default="config/policies.json", help="Path to policies YAML or JSON config.")
-    parser.add_argument("--data-root", default="data", help="Root folder for category data.")
-    parser.add_argument("--output-root", default="outputs", help="Root folder for generated files.")
+    parser.add_argument("--config", default=str(REPO_ROOT / "config" / "policies.json"), help="Path to policies YAML or JSON config.")
+    parser.add_argument("--data-root", default=str(REPO_ROOT / "data"), help="Root folder for category data.")
+    parser.add_argument("--output-root", default=str(REPO_ROOT / "outputs"), help="Root folder for generated files.")
     parser.add_argument("--strict", action="store_true", help="Treat warnings as failures.")
+    parser.add_argument(
+        "--strict-profile",
+        choices=("auto", "all", "curated"),
+        default="auto",
+        help="Strict warning scope: auto uses curated when --strict is set and all otherwise.",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Parse and validate without writing files.")
     return parser.parse_args()
 
@@ -192,8 +222,12 @@ def normalize_country_token(token: str) -> str:
     if not value:
         raise ValueError("Empty country value")
 
+    if value.upper() == "UN":
+        raise ValueError("Ignored non-country token: UN")
+
     if re.fullmatch(r"[A-Za-z]{2}", value):
-        code = value.upper()
+        short_code = value.upper()
+        code = short_code if short_code in ISO_ALPHA2_CODES else COUNTRY_ALIASES.get(short_code, "")
     else:
         key = re.sub(r"[^A-Za-z0-9]+", " ", value).strip().upper()
         code = COUNTRY_ALIASES.get(key, "")
@@ -222,8 +256,34 @@ def split_tokens(text: str) -> list[str]:
     return tokens
 
 
+def iter_cell_text_values(cell_value: Any) -> list[str]:
+    if cell_value is None:
+        return []
+    if isinstance(cell_value, list):
+        return [str(item) for item in cell_value if item is not None]
+    return [str(cell_value)]
+
+
+def is_relevant_csv_field(field_name: Any) -> bool:
+    if not isinstance(field_name, str):
+        return False
+    normalized = re.sub(r"[^a-z0-9]+", "_", field_name.strip().lower()).strip("_")
+    if not normalized:
+        return False
+    return any(hint in normalized for hint in CSV_FIELD_HINTS)
+
+
 def classify_token(token: str) -> str:
-    return "cidr" if "/" in token else "country"
+    normalized = token.strip()
+    if normalized.upper() == "EOF":
+        return "unknown"
+    if re.fullmatch(r"(?:\d{1,3}\.){3}\d{1,3}/\d{1,2}", normalized):
+        return "cidr"
+    if ":" in normalized and re.fullmatch(r"[0-9A-Fa-f:]+/\d{1,3}", normalized):
+        return "cidr"
+    if re.fullmatch(r"[A-Za-z .,'()\-]+", normalized):
+        return "country"
+    return "unknown"
 
 
 def parse_text_like_file(path: Path) -> tuple[list[str], list[str]]:
@@ -235,9 +295,10 @@ def parse_text_like_file(path: Path) -> tuple[list[str], list[str]]:
             if not line or line.startswith("#"):
                 continue
             for token in split_tokens(line):
-                if classify_token(token) == "cidr":
+                kind = classify_token(token)
+                if kind == "cidr":
                     cidrs.append(token)
-                else:
+                elif kind == "country":
                     countries.append(token)
     return countries, cidrs
 
@@ -250,16 +311,24 @@ def parse_csv_file(path: Path) -> tuple[list[str], list[str]]:
         if not reader.fieldnames:
             return countries, cidrs
 
+        has_relevant_fields = any(is_relevant_csv_field(field_name) for field_name in reader.fieldnames)
+
         for row in reader:
             for field_name, cell_value in row.items():
-                if not cell_value:
+                if has_relevant_fields and not is_relevant_csv_field(field_name):
                     continue
-                for token in split_tokens(cell_value):
-                    kind = classify_token(token)
-                    if kind == "cidr":
-                        cidrs.append(token)
-                    else:
-                        countries.append(token)
+
+                for raw_text in iter_cell_text_values(cell_value):
+                    if not raw_text:
+                        continue
+                    for token in split_tokens(raw_text):
+                        kind = classify_token(token)
+                        if kind == "cidr":
+                            cidrs.append(token)
+                        elif kind == "country":
+                            if not re.fullmatch(r"[A-Z]{2}", token.strip()):
+                                continue
+                            countries.append(token)
     return countries, cidrs
 
 
@@ -287,9 +356,10 @@ def extract_json_values(obj: Any, countries: list[str], cidrs: list[str]) -> Non
         token = obj.strip()
         if not token:
             return
-        if classify_token(token) == "cidr":
+        kind = classify_token(token)
+        if kind == "cidr":
             cidrs.append(token)
-        else:
+        elif kind == "country":
             countries.append(token)
 
 
@@ -302,7 +372,7 @@ def parse_json_file(path: Path) -> tuple[list[str], list[str]]:
     return countries, cidrs
 
 
-def read_raw_entries(category_path: Path) -> tuple[list[str], list[str]]:
+def read_raw_entries(category_path: Path, strict_profile: str = "all") -> tuple[list[str], list[str]]:
     countries: list[str] = []
     cidrs: list[str] = []
 
@@ -311,6 +381,9 @@ def read_raw_entries(category_path: Path) -> tuple[list[str], list[str]]:
 
     for path in sorted(category_path.rglob("*")):
         if not path.is_file() or path.name.lower() == "readme.md":
+            continue
+
+        if strict_profile == "curated" and path.name.lower() not in CURATED_FILENAMES:
             continue
 
         suffix = path.suffix.lower()
@@ -361,6 +434,7 @@ def build_policy(
     config: dict[str, Any],
     data_root: Path,
     logger: logging.Logger,
+    strict_profile: str = "all",
 ) -> tuple[dict[str, dict[str, list[str]]], dict[str, int], list[str]]:
     categories_config = config["policy_categories"]
     category_data: dict[str, dict[str, list[str]]] = {}
@@ -374,19 +448,29 @@ def build_policy(
             logger.info("Skipping disabled category: %s", category)
             continue
 
-        raw_countries, raw_cidrs = read_raw_entries(data_root / category)
+        raw_countries, raw_cidrs = read_raw_entries(data_root / category, strict_profile=strict_profile)
         normalized_countries: set[str] = set()
         normalized_cidrs: set[str] = set()
 
         for country in raw_countries:
-            code = normalize_country_token(country)
+            if str(country).strip().upper() == "UN":
+                continue
+            try:
+                code = normalize_country_token(country)
+            except ValueError as exc:
+                warnings.append(f"Skipped invalid country token in '{category}': {country} ({exc})")
+                continue
             if code in normalized_countries:
                 duplicate_count += 1
                 continue
             normalized_countries.add(code)
 
         for cidr in raw_cidrs:
-            normalized = normalize_cidr_token(cidr)
+            try:
+                normalized = normalize_cidr_token(cidr)
+            except ValueError as exc:
+                warnings.append(f"Skipped invalid CIDR token in '{category}': {cidr} ({exc})")
+                continue
             if normalized in normalized_cidrs:
                 duplicate_count += 1
                 continue
@@ -408,7 +492,7 @@ def build_policy(
     }
 
     if duplicate_count > 0:
-        warnings.append(f"Removed {duplicate_count} duplicate entries")
+        logger.info("Removed %s duplicate entries", duplicate_count)
 
     return category_data, summary, warnings
 
@@ -520,13 +604,19 @@ def main() -> int:
     config_path = Path(args.config)
     data_root = Path(args.data_root)
     output_root = Path(args.output_root)
+    effective_profile = args.strict_profile
+    if effective_profile == "auto":
+        effective_profile = "curated" if args.strict else "all"
 
     try:
         config = load_policy_config(config_path)
-        category_data, summary, warnings = build_policy(config, data_root, logger)
+        category_data, summary, warnings = build_policy(config, data_root, logger, strict_profile=effective_profile)
     except (PolicyBuildError, ValueError, OSError, json.JSONDecodeError) as exc:
         logger.error(str(exc))
         return 1
+
+    if args.strict and effective_profile == "curated":
+        logger.info("Strict mode profile: curated (countries.txt and cidrs.txt only)")
 
     for warning in warnings:
         logger.warning(warning)

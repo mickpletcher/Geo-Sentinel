@@ -12,6 +12,9 @@ import urllib.request
 from pathlib import Path
 
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
 def setup_logging() -> logging.Logger:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     return logging.getLogger("policy_source_downloader")
@@ -19,8 +22,8 @@ def setup_logging() -> logging.Logger:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Download policy source files into data categories.")
-    parser.add_argument("--manifest", default="config/policy-sources.json", help="Path to source manifest JSON.")
-    parser.add_argument("--data-root", default="data", help="Root data directory in this repository.")
+    parser.add_argument("--manifest", default=str(REPO_ROOT / "config" / "policy-sources.json"), help="Path to source manifest JSON.")
+    parser.add_argument("--data-root", default=str(REPO_ROOT / "data"), help="Root data directory in this repository.")
     parser.add_argument("--timeout", type=int, default=90, help="HTTP request timeout in seconds.")
     parser.add_argument("--dry-run", action="store_true", help="Show planned downloads without writing files.")
     return parser.parse_args()

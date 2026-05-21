@@ -100,6 +100,20 @@ Run with stricter validation:
 python scripts/build_geofence_policy.py --strict
 ```
 
+Note: strict mode now uses curated inputs by default which validates countries.txt and cidrs.txt.
+
+Run strict validation on curated local files only:
+
+```powershell
+python scripts/build_geofence_policy.py --strict --strict-profile curated
+```
+
+Run strict validation against every discovered file:
+
+```powershell
+python scripts/build_geofence_policy.py --strict --strict-profile all
+```
+
 Run a safe preview only:
 
 ```powershell

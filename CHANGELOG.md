@@ -81,6 +81,14 @@ Each entry follows the format: `YYYY-MM-DD` commit message.
 
 ## 2026-05-20
 
+- **Made curated strict profile the default strict behavior** - `python scripts/build_geofence_policy.py --strict` now automatically uses curated validation scope. Use `--strict-profile all` when you need strict validation across every discovered source file.
+
+- **Added strict profile switch for policy builds** - Added `--strict-profile` to `scripts/build_geofence_policy.py` with `all` and `curated` modes. Use `--strict --strict-profile curated` to validate only `countries.txt` and `cidrs.txt` inputs and avoid failures from noisy downloaded feed files.
+
+- **Hardened policy builder parsing for external source noise** - Updated CSV and text token handling in `scripts/build_geofence_policy.py` to ignore unsupported token types and convert malformed country or CIDR entries into warnings instead of crashing with a traceback.
+
+- **Fixed Python script default path resolution** - Updated `scripts/build_geofence_policy.py` and `scripts/ingest/download_policy_sources.py` to use repo root based default paths so commands work from inside `scripts/` and not only from the repository root.
+
 - **Cleaned stale generated artifacts from repo root** - Removed untracked runtime files `OFACCountryBaseline.json`, `OFACGeofenceIsoCodes.csv`, `OFACUnmappedCountries.txt`, `Get-OFACCountryChanges.log`, and regenerated `Outputs/` folder to keep the working tree clean.
 
 - **Added repository assessment baseline** - Created `assessment.md` with current state scorecard, architecture snapshot, risk findings, and a required checklist for keeping the assessment updated when behavior or risk changes.
