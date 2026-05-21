@@ -6,7 +6,7 @@ param (
     [string]$ConfigurationPath = (Join-Path $PSScriptRoot 'config\geofence.settings.json'),
 
     [Parameter()]
-    [ValidateSet('JSON', 'PowerShell', 'NginxMap', 'CloudflareRules', 'FirewallRules')]
+    [ValidateSet('JSON', 'PowerShell', 'NginxMap', 'CloudflareRules', 'FirewallRules', 'PiHole')]
     [string[]]$Format,
 
     [Parameter()]

@@ -81,6 +81,18 @@ Each entry follows the format: `YYYY-MM-DD` commit message.
 
 ## 2026-05-20
 
+- **Cleaned stale generated artifacts from repo root** - Removed untracked runtime files `OFACCountryBaseline.json`, `OFACGeofenceIsoCodes.csv`, `OFACUnmappedCountries.txt`, `Get-OFACCountryChanges.log`, and regenerated `Outputs/` folder to keep the working tree clean.
+
+- **Added repository assessment baseline** - Created `assessment.md` with current state scorecard, architecture snapshot, risk findings, and a required checklist for keeping the assessment updated when behavior or risk changes.
+
+- **Added a 60 second startup path to README** - Added a 3 command startup section for first run success and a simple file check list so new users can verify output quickly.
+
+- **Expanded README with beginner quick path and FAQ** - Added a one command quick start at the top and a larger beginner FAQ that covers missing Python, missing outputs, dry run usage, main workflow guidance, and PiHole export command.
+
+- **Rewrote README for novice onboarding** - Added a copy and paste quick start, prerequisites check, beginner friendly workflow steps, common commands, troubleshooting, and updated legacy PowerShell examples including PiHole export.
+
+- **Added Pi-hole export format to legacy PowerShell workflow** - Added `PiHole` format support to `Export-GeofenceRules.ps1` and `Export-GeofenceArtifacts`, including a generated regex blocklist output at `Outputs/pihole-regex-blocklist.txt`.
+
 - **Added policy based repository architecture** — Introduced `data/`, `scripts/`, `outputs/`, and `docs/` policy workflow folders with category subfolders and placeholder `README.md` files to document purpose and usage.
 
 - **Added policy category configuration** — Added `config/policies.yaml` and `config/policies.json` defining: `sanctions`, `high_risk`, `vpn_tor`, `hosting_providers`, `fraud_regions`, and `custom_business_rules`.

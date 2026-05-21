@@ -112,7 +112,7 @@ function Get-GeofenceSettings {
         }
     }
 
-    foreach ($formatPathProperty in 'Json', 'PowerShell', 'NginxMap', 'CloudflareRules', 'FirewallRules') {
+    foreach ($formatPathProperty in 'Json', 'PowerShell', 'NginxMap', 'CloudflareRules', 'FirewallRules', 'PiHole') {
         if ($settings.OutputPaths.PSObject.Properties.Name -contains $formatPathProperty) {
             $settings.OutputPaths.$formatPathProperty = Resolve-GeofencePath -BasePath $basePath -Path $settings.OutputPaths.$formatPathProperty
         }
@@ -1096,6 +1096,31 @@ function Export-GeofenceFirewallRules {
     return $Path
 }
 
+function Export-GeofencePiHole {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [pscustomobject]$RuleSet,
+
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    Ensure-GeofenceParentDirectory -Path $Path
+    $countryCodes = Get-DenyCountryCodes -RuleSet $RuleSet | ForEach-Object { [string]$_ } | Where-Object { $_ -match '^[A-Za-z]{2}$' }
+
+    $lines = [System.Collections.Generic.List[string]]::new()
+    [void]$lines.Add('# Geo Sentinel generated Pi-hole regex blocklist')
+    [void]$lines.Add("# GeneratedAt: $((Get-Date).ToString('s'))")
+
+    foreach ($code in @($countryCodes | ForEach-Object { $_.ToLowerInvariant() } | Sort-Object -Unique)) {
+        [void]$lines.Add("\\.$code`$")
+    }
+
+    $lines | Set-Content -Path $Path -Encoding UTF8
+    return $Path
+}
+
 function Export-GeofenceArtifacts {
     [CmdletBinding()]
     param (
@@ -1127,6 +1152,9 @@ function Export-GeofenceArtifacts {
             'FirewallRules' {
                 [void]$outputs.Add([pscustomobject]@{ Format = $format; Path = (Export-GeofenceFirewallRules -RuleSet $ruleSet -Path $ruleSet.Settings.OutputPaths.FirewallRules) })
             }
+            'PiHole' {
+                [void]$outputs.Add([pscustomobject]@{ Format = $format; Path = (Export-GeofencePiHole -RuleSet $ruleSet -Path $ruleSet.Settings.OutputPaths.PiHole) })
+            }
             default {
                 throw "Unsupported output format: $format"
             }
@@ -1142,6 +1170,7 @@ Export-ModuleMember -Function @(
     'Export-GeofenceFirewallRules',
     'Export-GeofenceJson',
     'Export-GeofenceNginxMap',
+    'Export-GeofencePiHole',
     'Export-GeofencePowerShellObjects',
     'Get-GeofenceDefaultSettingsPath',
     'Get-GeofenceProviders',

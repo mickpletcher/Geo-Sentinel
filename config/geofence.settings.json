@@ -4,14 +4,16 @@
     "PowerShell",
     "NginxMap",
     "CloudflareRules",
-    "FirewallRules"
+    "FirewallRules",
+    "PiHole"
   ],
   "OutputPaths": {
     "Json": "../Outputs/geofence-rules.json",
     "PowerShell": "../Outputs/geofence-rules.clixml",
     "NginxMap": "../Outputs/geofence.map.conf",
     "CloudflareRules": "../Outputs/cloudflare-country-rules.json",
-    "FirewallRules": "../Outputs/firewall-cidr-blocklist.txt"
+    "FirewallRules": "../Outputs/firewall-cidr-blocklist.txt",
+    "PiHole": "../Outputs/pihole-regex-blocklist.txt"
   },
   "CountryAllowlist": [],
   "CountryDenylist": [],

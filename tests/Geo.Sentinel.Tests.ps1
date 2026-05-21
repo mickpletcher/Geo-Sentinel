@@ -81,11 +81,12 @@ Describe 'Export generation' {
 
         $exports = Export-GeofenceArtifacts -ConfigurationPath $configPath
 
-        $exports.Count | Should -Be 5
+        $exports.Count | Should -Be 6
         foreach ($export in $exports) {
             Test-Path -Path $export.Path | Should -BeTrue
         }
 
         (Get-Content -Path (Join-Path $outputRoot 'firewall-cidr-blocklist.txt') -Raw) | Should -Match '198.51.100.0/24'
+        (Get-Content -Path (Join-Path $outputRoot 'pihole-regex-blocklist.txt') -Raw) | Should -Match '\\.cu\$'
     }
 }
