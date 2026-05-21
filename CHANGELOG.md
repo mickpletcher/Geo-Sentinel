@@ -109,6 +109,8 @@ Each entry follows the format: `YYYY-MM-DD` commit message.
 	- `OFACUnmappedCountries.txt`
 	- `Outputs/` directory (legacy generated output folder)
 
+- **Refreshed README to current repo state** — Replaced stale architecture and output references with the current policy builder first workflow, current folder layout, generated `outputs` behavior, and explicit legacy script section.
+
 - **2026-05-20** `efb9342` feat: add policy model workflow with repo local data refresh
 
 - **2026-05-20** `1da7446` changelog update
@@ -122,3 +124,5 @@ Each entry follows the format: `YYYY-MM-DD` commit message.
 - **2026-05-20** `8444ea4` fix: keep changelog clean after commits
 
 - **2026-05-20** fix: stabilize changelog hook entry format
+
+- **2026-05-20** docs: refresh README to match current policy workflow
