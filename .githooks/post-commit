@@ -14,11 +14,10 @@ if [ ! -f "CHANGELOG.md" ]; then
 	exit 0
 fi
 
-HASH=$(git rev-parse --short HEAD)
 DATE=$(date +%Y-%m-%d)
 MSG=$(git log -1 --pretty=format:"%s")
 
-printf "\n- **%s** \`%s\` %s\n" "$DATE" "$HASH" "$MSG" >> CHANGELOG.md
+printf "\n- **%s** %s\n" "$DATE" "$MSG" >> CHANGELOG.md
 
 git add CHANGELOG.md
 CHANGELOG_AMEND_IN_PROGRESS=1 git commit --amend --no-edit --no-verify >/dev/null

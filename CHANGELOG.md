@@ -9,7 +9,7 @@ To activate the hook after cloning:
 git config core.hooksPath .githooks
 ```
 
-Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
+Each entry follows the format: `YYYY-MM-DD` commit message.
 
 ---
 
@@ -120,3 +120,5 @@ Each entry follows the format: `YYYY-MM-DD` `short-hash` commit message.
 - **2026-05-20** `8ac0d07` chore: sync changelog after policy workflow commit
 
 - **2026-05-20** `8444ea4` fix: keep changelog clean after commits
+
+- **2026-05-20** fix: stabilize changelog hook entry format
